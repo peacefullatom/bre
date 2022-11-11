@@ -100,7 +100,7 @@ export class Color implements ColorModel {
     }
 
     /**
-     * This is a lazy implementation which will try check string of colour definition.
+     * This is a lazy implementation which will try check string of color definition.
      * 
      * You may provide:
      * - *#a* - it will return *#aaaaaaff*
