@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Block } from "../block/block";
+import { borderGenerator } from "../generators/border/border";
 import { Color } from "../color/color";
 import { Transform } from "../transform/transform";
 import { TransformType, Units } from "../transform/transform.model";
 import { PlaneProps } from "./plane.model";
+import { hexColor } from "../generators/hexColor/hex-color";
 
 export const Plane = (props: PlaneProps) => {
     const {
         center,
         background: backgroundColor,
+        border: borderColor,
         wrapperWidth,
         wrapperHeight,
         rotate: rotateTransform,
@@ -20,7 +23,8 @@ export const Plane = (props: PlaneProps) => {
     const posInitial = `0${units}`;
     const [left, setLeft] = useState(posInitial);
     const [top, setTop] = useState(posInitial);
-    const background = new Color(backgroundColor);
+    const background = hexColor(backgroundColor);
+    const border = borderGenerator(borderColor);
     const rotate = new Transform(rotateTransform);
     const translate = new Transform(translateTransform);
     const transform = [
@@ -53,9 +57,10 @@ export const Plane = (props: PlaneProps) => {
                 height,
                 left,
                 top,
-                background: background.hex,
+                background,
                 transform,
                 transformStyle: 'preserve-3d',
+                border,
             }}
         >
             <Block {...defaultProps} point={{ X: 0, Y: -1, Z: 0 }} />
