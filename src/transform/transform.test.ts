@@ -1,5 +1,6 @@
+import { Axis } from '../enums/axis.enum';
 import { Transform } from './transform';
-import { Axis, TransformType, Units } from './transform.model';
+import { TransformType, Units } from './transform.model';
 
 const transform = new Transform();
 
@@ -14,7 +15,7 @@ describe('it should assign values properly', () => {
         const X = 1;
         const Y = 2;
         const Z = 3;
-        const mock = new Transform({ X, Y, Z })
+        const mock = new Transform({ X, Y, Z });
         expect(mock.X).toEqual(X);
         expect(mock.Y).toEqual(Y);
         expect(mock.Z).toEqual(Z);

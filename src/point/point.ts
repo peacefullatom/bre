@@ -5,33 +5,33 @@ export class Point implements PointModel {
     private valueY: number;
     private valueZ: number;
 
-    set x(value: number) {
+    set X(value: number) {
         this.valueX = value;
     }
 
-    get x(): number {
+    get X(): number {
         return this.valueX;
     }
 
-    set y(value: number) {
+    set Y(value: number) {
         this.valueY = value;
     }
 
-    get y(): number {
+    get Y(): number {
         return this.valueY;
     }
 
-    set z(value: number) {
+    set Z(value: number) {
         this.valueZ = value;
     }
 
-    get z(): number {
+    get Z(): number {
         return this.valueZ;
     }
 
     constructor(settings?: Partial<PointModel>) {
-        this.x = settings?.x || 0;
-        this.y = settings?.y || 0;
-        this.z = settings?.z || 0;
+        this.X = settings?.X || 0;
+        this.Y = settings?.Y || 0;
+        this.Z = settings?.Z || 0;
     }
 }

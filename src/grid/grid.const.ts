@@ -1,0 +1,1 @@
+export const DEFAULT_AXIS_LENGTH = 10;
