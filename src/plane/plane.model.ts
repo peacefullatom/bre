@@ -3,7 +3,6 @@ import { Grid } from '../grid/grid';
 import { PointModel } from '../point/point.model';
 
 export interface PlaneProps {
-    center: PointModel;
     background?: Partial<ColorModel>;
     border?: Partial<ColorModel>;
     wrapperWidth: number;
