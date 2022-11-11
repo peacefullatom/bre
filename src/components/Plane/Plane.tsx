@@ -16,20 +16,26 @@ export const Plane = (props: PlaneProps) => {
         rotate: rotateTransform,
         translate: translateTransform,
         grid,
+        blockScript,
     } = props;
     const { width, height, units, axisLength: bounds } = grid;
+    const defaultScriptProps = blockScript.defaultProps || {};
+    const scriptProps = {
+        ...defaultScriptProps,
+        color: { hex: '#6699cc80' },
+        border: { hex: '#336699' },
+    };
     const posInitial = `0${units}`;
     const [left, setLeft] = useState(posInitial);
     const [top, setTop] = useState(posInitial);
     const background = hexColor(backgroundColor);
     const border = borderGenerator(borderColor);
-    const rotate = new Transform(rotateTransform);
-    const translate = new Transform(translateTransform);
-    const transformBlock = new Transform();
-    const transform = [
-        rotate.getTransform(TransformType.Rotate, Units.Deg),
-        translate.getTransform(TransformType.Translate, units),
-    ].join(' ');
+    const transformer = new Transform();
+
+    const transform = transformer.getPointTransformBatch([
+        { transform: TransformType.Rotate, units: Units.Deg, point: rotateTransform },
+        { transform: TransformType.Translate, units, point: translateTransform },
+    ]);
 
     const getCenter = (outer: number, inner: number) => (outer / 2) - inner * grid.blockSize;
 
@@ -46,7 +52,11 @@ export const Plane = (props: PlaneProps) => {
         }
     }, [wrapperWidth, wrapperHeight, grid]);
 
-    const defaultProps = { grid, color: { hex: '#6699cc80' }, border: { hex: '#336699' }, transform: transformBlock };
+    const defaultProps = {
+        ...scriptProps,
+        grid,
+        transform: transformer,
+    };
 
     return (
         <div
@@ -62,30 +72,9 @@ export const Plane = (props: PlaneProps) => {
                 border,
             }}
         >
-            <Block {...defaultProps} point={{ X: 0, Y: -1, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 0, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 1, Z: 0 }} />
-
-            <Block {...defaultProps} point={{ X: 1, Y: -1, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: 1, Y: 0, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: 1, Y: 1, Z: 0 }} />
-
-            <Block {...defaultProps} point={{ X: -1, Y: -1, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: -1, Y: 0, Z: 0 }} />
-            <Block {...defaultProps} point={{ X: -1, Y: 1, Z: 0 }} />
-
-            <Block {...defaultProps} point={{ X: 0, Y: -1, Z: 1 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 0, Z: 1 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 1, Z: 1 }} />
-
-            <Block {...defaultProps} point={{ X: 0, Y: -1, Z: -1 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 0, Z: -1 }} />
-            <Block {...defaultProps} point={{ X: 0, Y: 1, Z: -1 }} />
-
-            <Block {...defaultProps} point={{ X: -1, Y: 0, Z: 1 }} />
-            <Block {...defaultProps} point={{ X: -1, Y: 0, Z: -1 }} />
-            <Block {...defaultProps} point={{ X: 1, Y: 0, Z: -1 }} />
-            <Block {...defaultProps} point={{ X: 1, Y: 0, Z: 1 }} />
+            {blockScript.blocks.map((point, ind) => (
+                <Block key={ind} {...defaultProps} point={point} />
+            ))}
         </div>
     );
 };

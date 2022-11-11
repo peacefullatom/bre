@@ -1,7 +1,7 @@
 import { Axis } from "../../enums/axis.enum";
 import { Units } from "../../enums/units.enum";
 import { PointModel } from "../point/point.model";
-import { TransformBatch, TransformType } from "./transform.model";
+import { TransformBatch, TransformPoint, TransformType } from "./transform.model";
 
 export class Transform implements PointModel {
     private valueX: number;
@@ -44,6 +44,18 @@ export class Transform implements PointModel {
 
     getTransform(transform: TransformType, units?: Units): string {
         return Object.keys(Axis).map(axis => `${transform}${axis}(${this[axis as Axis]}${units || ''})`).join(' ');
+    }
+
+    getPointTransform(task: TransformPoint): string | undefined {
+        const { transform, units, point } = task;
+        if (!point) {
+            return;
+        }
+        return Object.keys(Axis).map(axis => `${transform}${axis}(${point[axis as Axis]}${units})`).join(' ');
+    }
+
+    getPointTransformBatch(batch: TransformPoint[]): string {
+        return batch.map(task => this.getPointTransform(task)).join(' ');
     }
 
     getRotateByAxis(axis: Axis): string {
