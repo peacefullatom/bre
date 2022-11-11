@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Grid } from '../grid/grid';
-import { Plane } from '../plane/plane';
-import { PlaneProps } from '../plane/plane.model';
+import { Grid } from '../../utils/grid/grid';
+import { Plane } from '../Plane/Plane';
+import { PlaneProps } from '../Plane/Plane.model';
 
 export const Wrapper = () => {
     const [wrapperWidth, setWrapperWidth] = useState(0);

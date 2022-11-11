@@ -1,13 +1,12 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { Grid } from '../grid/grid';
-import { Plane } from './plane';
-import { PlaneProps } from './plane.model';
+import { Grid } from '../../utils/grid/grid';
+import { Plane } from './Plane';
+import { PlaneProps } from './Plane.model';
 
 const grid = new Grid();
 
 const planeProps: PlaneProps = {
-    center: { X: 0, Y: 0, Z: 0 },
     background: { hex: '#33669980' },
     wrapperWidth: 1024,
     wrapperHeight: 1024,

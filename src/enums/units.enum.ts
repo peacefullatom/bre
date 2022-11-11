@@ -1,8 +1,3 @@
-export enum TransformType {
-    Rotate = 'rotate',
-    Translate = 'translate',
-}
-
 // https://www.w3schools.com/csSref/css_units.php
 export enum Units {
     Deg = 'deg',

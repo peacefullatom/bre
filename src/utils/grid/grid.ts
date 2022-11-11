@@ -1,16 +1,18 @@
-import { Axis } from "../enums/axis.enum";
+import { Axis } from "../../enums/axis.enum";
+import { Units } from "../../enums/units.enum";
 import { PointModel } from "../point/point.model";
-import { Units } from "../transform/transform.model";
 import { DEFAULT_AXIS_LENGTH } from "./grid.const";
-import { GridModel, BlockSize } from "./grid.model";
+import { BlockSize, GridCache, GridModel } from "./grid.model";
 
 export class Grid implements GridModel {
     private valueBlockSize: BlockSize | number;
     private valueUnits: Units;
     private valueAxisLength: PointModel;
+    private valueGridCache: GridCache = { X: {}, Y: {}, Z: {} };
 
     set blockSize(value: BlockSize | number) {
         this.valueBlockSize = value;
+        this.dropGridCache();
     }
 
     get blockSize(): BlockSize | number {
@@ -39,6 +41,7 @@ export class Grid implements GridModel {
 
     set axisLength(value: PointModel) {
         this.valueAxisLength = value;
+        this.dropGridCache();
     }
 
     get axisLength(): PointModel {
@@ -49,6 +52,7 @@ export class Grid implements GridModel {
         this.blockSize = settings?.blockSize || BlockSize.Md;
         this.units = settings?.units || Units.Px;
         this.axisLength = settings?.axisLength || { X: DEFAULT_AXIS_LENGTH, Y: DEFAULT_AXIS_LENGTH, Z: DEFAULT_AXIS_LENGTH };
+        this.dropGridCache();
     }
 
     getFullAxisLength(axisLength: number): string {
@@ -62,7 +66,7 @@ export class Grid implements GridModel {
             default:
                 const maxBlocks = axisLength[axis] * 2 + 1;
                 const width = maxBlocks * blockSize;
-                return width / 2 + blockSize * point[axis];
+                return width / 2 + blockSize * point[axis] - blockSize / 2;
         }
     }
 
@@ -71,8 +75,21 @@ export class Grid implements GridModel {
         const { blockSize, axisLength } = this;
         const newPoint = { ...point };
 
-        Object.keys(Axis).forEach(axis => {
-            newPoint[axis as Axis] = this.getAbsolutePosition(axis as Axis, axisLength, blockSize, point);
+        Object.keys(Axis).forEach(key => {
+            const axis = key as Axis;
+            const pointAxis = point[axis];
+            const cache = this.valueGridCache[axis];
+            const cachedValue = cache[pointAxis];
+            let value: number;
+            if (typeof cachedValue === 'number') {
+                value = cachedValue;
+            } else {
+                const absolute = this.getAbsolutePosition(axis, axisLength, blockSize, point);
+                value = absolute;
+                cache[pointAxis] = absolute;
+            }
+
+            newPoint[axis] = value;
         });
 
         return newPoint;
@@ -95,5 +112,15 @@ export class Grid implements GridModel {
             return reverse;
         }
         return value;
+    }
+
+    private dropGridCache(axis?: Axis): void {
+        if (axis && this.valueGridCache[axis]) {
+            this.valueGridCache[axis] = {};
+        }
+
+        Object.keys(Axis).forEach(key => {
+            this.valueGridCache[key as Axis] = {};
+        });
     }
 }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Block } from "../block/block";
-import { borderGenerator } from "../generators/border/border";
-import { Color } from "../color/color";
-import { Transform } from "../transform/transform";
-import { TransformType, Units } from "../transform/transform.model";
-import { PlaneProps } from "./plane.model";
-import { hexColor } from "../generators/hexColor/hex-color";
+import { Units } from "../../enums/units.enum";
+import { borderGenerator } from "../../generators/border/border";
+import { hexColor } from "../../generators/hexColor/hex-color";
+import { Transform } from "../../utils/transform/transform";
+import { TransformType } from "../../utils/transform/transform.model";
+import { Block } from "../Block/Block";
+import { PlaneProps } from "./Plane.model";
 
 export const Plane = (props: PlaneProps) => {
     const {
@@ -25,6 +25,7 @@ export const Plane = (props: PlaneProps) => {
     const border = borderGenerator(borderColor);
     const rotate = new Transform(rotateTransform);
     const translate = new Transform(translateTransform);
+    const transformBlock = new Transform();
     const transform = [
         rotate.getTransform(TransformType.Rotate, Units.Deg),
         translate.getTransform(TransformType.Translate, units),
@@ -45,7 +46,7 @@ export const Plane = (props: PlaneProps) => {
         }
     }, [wrapperWidth, wrapperHeight, grid]);
 
-    const defaultProps = { grid, color: { hex: '#6699cc80' }, border: { hex: '#336699' } };
+    const defaultProps = { grid, color: { hex: '#6699cc80' }, border: { hex: '#336699' }, transform: transformBlock };
 
     return (
         <div

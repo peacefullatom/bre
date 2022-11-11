@@ -1,6 +1,6 @@
-import { ColorModel } from '../color/color.model';
-import { Grid } from '../grid/grid';
-import { PointModel } from '../point/point.model';
+import { ColorModel } from "../../utils/color/color.model";
+import { Grid } from "../../utils/grid/grid";
+import { PointModel } from "../../utils/point/point.model";
 
 export interface PlaneProps {
     background?: Partial<ColorModel>;

@@ -1,5 +1,5 @@
+import { Units } from '../../enums/units.enum';
 import { PointModel } from '../point/point.model';
-import { Units } from '../transform/transform.model';
 import { Grid } from './grid';
 import { DEFAULT_AXIS_LENGTH } from './grid.const';
 import { BlockSize } from './grid.model';
@@ -46,21 +46,21 @@ describe('it should convert relative point to absolute', () => {
         const mock = 0;
         const point: PointModel = { X: mock, Y: mock, Z: mock };
         const result = grid.relativeToAbsolute(point);
-        expect(result).toEqual({ X: 42, Y: 42, Z: 0 });
+        expect(result).toEqual({ X: 40, Y: 40, Z: 0 });
     });
 
     test('it should normalize positive point', () => {
         const mock = 300;
         const point: PointModel = { X: mock, Y: mock, Z: mock };
         const result = grid.relativeToAbsolute(point);
-        expect(result).toEqual({ X: 82, Y: 82, Z: 40 });
+        expect(result).toEqual({ X: 80, Y: 80, Z: 40 });
     });
 
     test('it should normalize negative point', () => {
         const mock = -300;
         const point: PointModel = { X: mock, Y: mock, Z: mock };
         const result = grid.relativeToAbsolute(point);
-        expect(result).toEqual({ X: 2, Y: 2, Z: -40 });
+        expect(result).toEqual({ X: 0, Y: 0, Z: -40 });
     });
 });
 

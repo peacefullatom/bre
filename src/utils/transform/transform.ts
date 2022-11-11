@@ -1,6 +1,7 @@
-import { Axis } from "../enums/axis.enum";
+import { Axis } from "../../enums/axis.enum";
+import { Units } from "../../enums/units.enum";
 import { PointModel } from "../point/point.model";
-import { TransformType, Units } from "./transform.model";
+import { TransformBatch, TransformType } from "./transform.model";
 
 export class Transform implements PointModel {
     private valueX: number;
@@ -51,5 +52,14 @@ export class Transform implements PointModel {
 
     getTranslateByAxis(axis: Axis, units = Units.Em): string {
         return `${TransformType.Translate}${axis}(${this[axis]}${units})`;
+    }
+
+    getTransformBatch(batch: TransformBatch): string {
+        return Object.keys(batch)
+            .map(key => {
+                const transform = batch[key as TransformType] || [];
+                return transform.map(settings => `${key}${settings.axis}(${settings.value}${settings.units})`);
+            })
+            .join(' ');
     }
 }
