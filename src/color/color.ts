@@ -1,4 +1,4 @@
-import { DEFAULT_HEX_APLHA, DEFAULT_HEX_BLACK, DEFAULT_HEX_COLOR, DEFAULT_NUMERIC_APLHA, DEFAULT_NUMERIC_BLACK } from "./color.const";
+import { DEFAULT_HEX_ALPHA, DEFAULT_HEX_BLACK, DEFAULT_HEX_COLOR, DEFAULT_NUMERIC_ALPHA, DEFAULT_NUMERIC_BLACK } from "./color.const";
 import { ColorModel } from "./color.model";
 
 export class Color implements ColorModel {
@@ -66,9 +66,9 @@ export class Color implements ColorModel {
         this.r = settings?.r || DEFAULT_NUMERIC_BLACK;
         this.g = settings?.g || DEFAULT_NUMERIC_BLACK;
         this.b = settings?.b || DEFAULT_NUMERIC_BLACK;
-        this.a = settings?.a || DEFAULT_NUMERIC_APLHA;
+        this.a = settings?.a || DEFAULT_NUMERIC_ALPHA;
         if (typeof settings?.hex === 'string') {
-            this.hex = settings.hex;
+            this.hex = this.normalizeHex(settings.hex);
         }
     }
 
@@ -115,7 +115,7 @@ export class Color implements ColorModel {
             return value ? value + value : DEFAULT_HEX_BLACK;
         };
         const glue = (r?: string, g?: string, b?: string, a?: string): string => {
-            return `#${normalize(r)}${normalize(g)}${normalize(b)}${normalize(a, DEFAULT_HEX_APLHA)}`.toLowerCase();
+            return `#${normalize(r)}${normalize(g)}${normalize(b)}${normalize(a, DEFAULT_HEX_ALPHA)}`.toLowerCase();
         };
         const value = color.replace(/#/, '');
         const len = value.length;
