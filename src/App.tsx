@@ -1,4 +1,3 @@
-import './App.css';
 import { Wrapper } from './wrapper/wrapper';
 
 const App = () => {
