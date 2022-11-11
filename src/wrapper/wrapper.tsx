@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Grid } from '../grid/grid';
 import { Plane } from '../plane/plane';
 import { PlaneProps } from '../plane/plane.model';
 
@@ -6,18 +7,14 @@ export const Wrapper = () => {
     const [wrapperWidth, setWrapperWidth] = useState(0);
     const [wrapperHeight, setWrapperHeight] = useState(0);
     const ref = useRef<HTMLDivElement>(null);
+    const grid = new Grid({ blockSize: 64, axisLength: { X: 3, Y: 3, Z: 3 } });
     const planeProps: PlaneProps = {
-        center: { x: 0, y: 0, z: 0 },
-        background: { hex: '#33669980' },
-        width: 500,
-        height: 500,
+        center: { X: 0, Y: 0, Z: 0 },
+        background: { hex: '#33669900' },
         wrapperWidth,
         wrapperHeight,
-        rotate: {
-            X: 52,
-            Y: 52,
-            Z: 52,
-        }
+        rotate: { X: -15, Y: -115, Z: 0, },
+        grid,
     };
 
     const updateDimensions = () => {
@@ -50,4 +47,4 @@ export const Wrapper = () => {
             <Plane {...planeProps} />
         </div>
     );
-}
+};
