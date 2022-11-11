@@ -1,5 +1,5 @@
 import { Color } from './color';
-import { DEFAULT_HEX_APLHA, DEFAULT_HEX_COLOR, DEFAULT_NUMERIC_APLHA, DEFAULT_NUMERIC_BLACK } from './color.const';
+import { DEFAULT_HEX_ALPHA, DEFAULT_HEX_COLOR, DEFAULT_NUMERIC_ALPHA, DEFAULT_NUMERIC_BLACK } from './color.const';
 
 const color = new Color();
 const singleHex = '#a';
@@ -13,7 +13,7 @@ describe('it should properly get and set values', () => {
         expect(color.r).toEqual(DEFAULT_NUMERIC_BLACK);
         expect(color.g).toEqual(DEFAULT_NUMERIC_BLACK);
         expect(color.b).toEqual(DEFAULT_NUMERIC_BLACK);
-        expect(color.a).toEqual(DEFAULT_NUMERIC_APLHA);
+        expect(color.a).toEqual(DEFAULT_NUMERIC_ALPHA);
     });
 
     test('it should set given colors', () => {
@@ -40,7 +40,7 @@ describe('it should properly get and set values', () => {
         expect(color.r).toEqual(DEFAULT_NUMERIC_BLACK);
         expect(color.g).toEqual(DEFAULT_NUMERIC_BLACK);
         expect(color.b).toEqual(DEFAULT_NUMERIC_BLACK);
-        expect(color.a).toEqual(DEFAULT_NUMERIC_APLHA);
+        expect(color.a).toEqual(DEFAULT_NUMERIC_ALPHA);
     });
 
     test('it should apply a triple hex value', () => {
@@ -114,7 +114,7 @@ describe('it should normalize hex value', () => {
 
     test('it should normalize a normal hex value', () => {
         const normal = color.normalizeHex(normalHex);
-        expect(normal).toEqual(`${normalHex}${DEFAULT_HEX_APLHA}`);
+        expect(normal).toEqual(`${normalHex}${DEFAULT_HEX_ALPHA}`);
     });
 
     test('it should normalize a default hex with alpha', () => {

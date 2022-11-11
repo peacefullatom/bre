@@ -1,6 +1,8 @@
-import { Axis, TransformType, TransformModel, Units } from "./transform.model";
+import { Axis } from "../enums/axis.enum";
+import { PointModel } from "../point/point.model";
+import { TransformType, Units } from "./transform.model";
 
-export class Transform implements TransformModel {
+export class Transform implements PointModel {
     private valueX: number;
     private valueY: number;
     private valueZ: number;
@@ -29,7 +31,7 @@ export class Transform implements TransformModel {
         return this.valueZ;
     }
 
-    constructor(settings?: Partial<TransformModel>) {
+    constructor(settings?: Partial<PointModel>) {
         this.X = settings?.X || 0;
         this.Y = settings?.Y || 0;
         this.Z = settings?.Z || 0;

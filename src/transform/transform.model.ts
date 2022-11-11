@@ -1,15 +1,3 @@
-export interface TransformModel {
-    X: number;
-    Y: number;
-    Z: number;
-}
-
-export enum Axis {
-    X = 'X',
-    Y = 'Y',
-    Z = 'Z',
-};
-
 export enum TransformType {
     Rotate = 'rotate',
     Translate = 'translate',
