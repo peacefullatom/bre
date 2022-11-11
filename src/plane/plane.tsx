@@ -9,7 +9,6 @@ import { hexColor } from "../generators/hexColor/hex-color";
 
 export const Plane = (props: PlaneProps) => {
     const {
-        center,
         background: backgroundColor,
         border: borderColor,
         wrapperWidth,
@@ -18,7 +17,6 @@ export const Plane = (props: PlaneProps) => {
         translate: translateTransform,
         grid,
     } = props;
-    const { X, Y, Z } = center;
     const { width, height, units, axisLength: bounds } = grid;
     const posInitial = `0${units}`;
     const [left, setLeft] = useState(posInitial);
@@ -32,20 +30,20 @@ export const Plane = (props: PlaneProps) => {
         translate.getTransform(TransformType.Translate, units),
     ].join(' ');
 
-    const getCenter = (outer: number, position: number, inner: number) => (outer / 2) + position - inner * grid.blockSize;
+    const getCenter = (outer: number, inner: number) => (outer / 2) - inner * grid.blockSize;
 
     useEffect(() => {
-        const newPosX = `${getCenter(wrapperWidth, X, bounds.X)}${units}`;
-        const newPosY = `${getCenter(wrapperHeight, Y, bounds.Y)}${units}`;
+        const newLeft = `${getCenter(wrapperWidth, bounds.X)}${units}`;
+        const newTop = `${getCenter(wrapperHeight, bounds.Y)}${units}`;
 
-        if (left !== newPosX) {
-            setLeft(newPosX);
+        if (left !== newLeft) {
+            setLeft(newLeft);
         }
 
-        if (top !== newPosY) {
-            setTop(newPosY);
+        if (top !== newTop) {
+            setTop(newTop);
         }
-    }, [wrapperWidth, wrapperHeight]);
+    }, [wrapperWidth, wrapperHeight, grid]);
 
     const defaultProps = { grid, color: { hex: '#6699cc80' }, border: { hex: '#336699' } };
 
