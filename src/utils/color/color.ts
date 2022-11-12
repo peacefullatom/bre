@@ -73,8 +73,7 @@ export class Color implements ColorModel {
     constructor(settings?: ColorType) {
         if (typeof settings === 'string') {
             this.hex = this.normalizeHex(settings);
-        }
-        if (typeof settings === 'object') {
+        } else {
             this.r = settings?.r || DEFAULT_NUMERIC_BLACK;
             this.g = settings?.g || DEFAULT_NUMERIC_BLACK;
             this.b = settings?.b || DEFAULT_NUMERIC_BLACK;
