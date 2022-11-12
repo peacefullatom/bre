@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Units } from "../../enums/units.enum";
-import { Grid } from "../../utils/grid/grid";
-import { PointModel } from "../../utils/point/point.model";
+import { useEffect, useState } from 'react';
+import { Units } from '../../enums/units.enum';
+import { Grid } from '../../utils/grid/grid';
+import { PointModel } from '../../utils/point/point.model';
 
 export const useGetCenter = (
     wrapperWidth: number,
@@ -9,12 +9,13 @@ export const useGetCenter = (
     units: Units,
     blockSize: number,
     axisLength: PointModel,
-    grid: Grid,
+    grid: Grid
 ) => {
     const posInitial = `0${units}`;
     const [left, setLeft] = useState(posInitial);
     const [top, setTop] = useState(posInitial);
-    const getCenter = (outer: number, inner: number) => (outer / 2) - inner * blockSize;
+    const getCenter = (outer: number, inner: number) =>
+        outer / 2 - (inner * 2 * blockSize + blockSize) / 2;
 
     useEffect(() => {
         const newLeft = `${getCenter(wrapperWidth, axisLength.X)}${units}`;
