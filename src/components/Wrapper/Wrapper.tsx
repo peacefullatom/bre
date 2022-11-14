@@ -13,6 +13,29 @@ export const Wrapper = () => {
         wrapperHeight,
         rotate: { X: -15, Y: -115, Z: 0, },
         grid,
+        blockScript: {
+            blocks: [
+                { X: 0, Y: -1, Z: 0 },
+                { X: 0, Y: 0, Z: 0 },
+                { X: 0, Y: 1, Z: 0 },
+                { X: 1, Y: -1, Z: 0 },
+                { X: 1, Y: 0, Z: 0 },
+                { X: 1, Y: 1, Z: 0 },
+                { X: -1, Y: -1, Z: 0 },
+                { X: -1, Y: 0, Z: 0 },
+                { X: -1, Y: 1, Z: 0 },
+                { X: 0, Y: -1, Z: 1 },
+                { X: 0, Y: 0, Z: 1 },
+                { X: 0, Y: 1, Z: 1 },
+                { X: 0, Y: -1, Z: -1 },
+                { X: 0, Y: 0, Z: -1 },
+                { X: 0, Y: 1, Z: -1 },
+                { X: -1, Y: 0, Z: 1 },
+                { X: -1, Y: 0, Z: -1 },
+                { X: 1, Y: 0, Z: -1 },
+                { X: 1, Y: 0, Z: 1 },
+            ],
+        },
     };
 
     const updateDimensions = () => {

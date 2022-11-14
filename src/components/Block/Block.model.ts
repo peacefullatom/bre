@@ -10,3 +10,11 @@ export interface BlockModel {
     grid: Grid;
     transform: Transform;
 }
+
+export interface BlockScript {
+    defaultProps?: {
+        color?: Partial<ColorModel>;
+        border?: Partial<ColorModel>;
+    };
+    blocks: PointModel[];
+}
