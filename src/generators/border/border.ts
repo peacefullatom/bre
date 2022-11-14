@@ -1,6 +1,6 @@
-import { Color } from "../../color/color";
-import { ColorModel } from "../../color/color.model";
-import { Units } from "../../transform/transform.model";
+import { Units } from "../../enums/units.enum";
+import { Color } from "../../utils/color/color";
+import { ColorModel } from "../../utils/color/color.model";
 import { BorderStyle } from "./border.model";
 
 export const borderGenerator = (

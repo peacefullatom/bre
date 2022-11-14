@@ -1,6 +1,6 @@
-import { Units } from '../../transform/transform.model';
-import { borderGenerator } from './border';
-import { BorderStyle } from './border.model';
+import { Units } from "../../enums/units.enum";
+import { borderGenerator } from "./border";
+import { BorderStyle } from "./border.model";
 
 const defaultColor = { hex: '#d' };
 

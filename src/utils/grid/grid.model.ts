@@ -1,5 +1,6 @@
+import { Axis } from "../../enums/axis.enum";
+import { Units } from "../../enums/units.enum";
 import { PointModel } from "../point/point.model";
-import { Units } from "../transform/transform.model";
 
 export enum BlockSize {
     Xs = 1,
@@ -17,3 +18,7 @@ export interface GridModel {
     depth: string;
     axisLength: PointModel;
 }
+
+export type GridCache = {
+    [key in Axis]: { [key: number]: number | undefined; };
+};

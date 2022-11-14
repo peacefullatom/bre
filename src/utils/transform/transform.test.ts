@@ -1,6 +1,7 @@
-import { Axis } from '../enums/axis.enum';
+import { Axis } from "../../enums/axis.enum";
+import { Units } from "../../enums/units.enum";
 import { Transform } from './transform';
-import { TransformType, Units } from './transform.model';
+import { TransformType } from "./transform.model";
 
 const transform = new Transform();
 
