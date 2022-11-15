@@ -5,3 +5,5 @@ export interface ColorModel {
     b: number;
     a: number;
 }
+
+export type ColorType = Partial<ColorModel> | string;

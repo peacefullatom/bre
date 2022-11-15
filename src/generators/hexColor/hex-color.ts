@@ -1,7 +1,7 @@
-import { Color } from "../../utils/color/color";
-import { ColorModel } from "../../utils/color/color.model";
+import { Color } from '../../utils/color/color';
+import { ColorType } from '../../utils/color/color.model';
 
-export const hexColor = (color?: Partial<ColorModel>): string | undefined => {
+export const hexColor = (color?: ColorType): string | undefined => {
     if (!color) {
         return;
     }

@@ -1,49 +1,100 @@
-import { CSSProperties } from "react";
-import { Axis } from "../../enums/axis.enum";
-import { Units } from "../../enums/units.enum";
-import { Color } from "../../utils/color/color";
-import { TransformBatch } from "../../utils/transform/transform.model";
-import { BlockModel } from "./Block.model";
+import { Axis } from '../../enums/axis.enum';
+import { Units } from '../../enums/units.enum';
+import { borderGenerator } from '../../generators/border/border';
+import { hexColor } from '../../generators/hexColor/hex-color';
+import { ColorModel, ColorType } from '../../utils/color/color.model';
+import { TransformBatch } from '../../utils/transform/transform.model';
+import { Side } from '../Side/Side';
+import { BLOCK_DEFAULT_SETTINGS } from './Block.const';
+import { BlockModel, BlockSide } from './Block.model';
 
 export const Block = (props: BlockModel) => {
-    const { grid, color: colorSettings, border: borderSettings, point: pointSettings, transform } = props;
+    const {
+        background: backgroundSettings,
+        border: borderSettings,
+        grid,
+        point: pointSettings,
+        sides,
+        transform,
+    } = props;
     const { blockSize, units } = grid;
-    const color = new Color(colorSettings);
-    const border = new Color(borderSettings);
-    const background = color.hex;
     const size = `${blockSize}${units}`;
-    const defaultSideCss: CSSProperties = { position: 'absolute', width: size, height: size, background, border: `1px solid ${border.hex}` };
     const point = grid.relativeToAbsolute(pointSettings);
-    const translateZ: TransformBatch = { translate: [{ axis: Axis.Z, units, value: blockSize / 2 }] };
 
-    const getTransform = (axis: Axis, value: number) => transform.getTransformBatch({ rotate: [{ axis, units: Units.Deg, value }], ...translateZ });
+    const translateZ: TransformBatch = {
+        translate: [{ axis: Axis.Z, units, value: blockSize / 2 }],
+    };
+
+    const getTransform = (axis: Axis, value: number) => {
+        return transform.getTransformBatch({
+            rotate: [{ axis, units: Units.Deg, value }],
+            ...translateZ,
+        });
+    };
+
+    const parseSideTransform = (side: BlockSide): string | undefined => {
+        switch (side) {
+            // make cache on the level of transformer
+            case BlockSide.Front:
+                return transform.getTransformBatch({ ...translateZ });
+            // make cache on the level of transformer
+            case BlockSide.Top:
+                return getTransform(Axis.X, 90);
+            // make cache on the level of transformer
+            case BlockSide.Right:
+                return getTransform(Axis.Y, 90);
+            // make cache on the level of transformer
+            case BlockSide.Left:
+                return getTransform(Axis.Y, -90);
+            // make cache on the level of transformer
+            case BlockSide.Bottom:
+                return getTransform(Axis.X, -90);
+            // make cache on the level of transformer
+            case BlockSide.Back:
+                return getTransform(Axis.X, -180);
+        }
+    };
+
+    const parseColorType = (hex: ColorType) =>
+        typeof hex === 'string' ? { hex } : hex;
+
+    const parseSideBackground = (side: BlockSide): string | undefined => {
+        const settings = sides ? sides[side] : undefined;
+        const color = settings?.background
+            ? parseColorType(settings.background)
+            : backgroundSettings;
+        const background = hexColor(color);
+        return background || hexColor(BLOCK_DEFAULT_SETTINGS.background);
+    };
+
+    const parseSideBorder = (side: BlockSide): string | undefined => {
+        const settings = sides ? sides[side] : undefined;
+        const color = settings?.border
+            ? ({ hex: settings?.border } as Partial<ColorModel>)
+            : borderSettings;
+        const border = borderGenerator(color);
+        return border || borderGenerator(BLOCK_DEFAULT_SETTINGS.border);
+    };
 
     return (
-        <div style={{
-            position: 'absolute',
-            left: `${point.X}${units}`,
-            top: `${point.Y}${units}`,
-            transform: `translateZ(${point.Z}${units})`,
-            transformStyle: 'preserve-3d'
-        }}>
-            {/* front */}
-            {/* <div style={{ ...defaultSideCss, transform: `translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: transform.getTransformBatch({ ...translateZ }) }} />
-            {/* top */}
-            {/* <div style={{ ...defaultSideCss, transform: `rotateX(90deg) translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: getTransform(Axis.X, 90) }} />
-            {/* right */}
-            {/* <div style={{ ...defaultSideCss, transform: `rotateY(90deg) translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: getTransform(Axis.Y, 90) }} />
-            {/* left */}
-            {/* <div style={{ ...defaultSideCss, transform: `rotateY(-90deg) translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: getTransform(Axis.Y, -90) }} />
-            {/* bottom */}
-            {/* <div style={{ ...defaultSideCss, transform: `rotateX(-90deg) translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: getTransform(Axis.X, -90) }} />
-            {/* back */}
-            {/* <div style={{ ...defaultSideCss, transform: `rotateY(-180deg) translateZ(${sizeX2})` }} /> */}
-            <div style={{ ...defaultSideCss, transform: getTransform(Axis.X, -180) }} />
+        <div
+            style={{
+                left: `${point.X}${units}`,
+                position: 'absolute',
+                top: `${point.Y}${units}`,
+                transform: `translateZ(${point.Z}${units})`,
+                transformStyle: 'preserve-3d',
+            }}
+        >
+            {Object.values(BlockSide).map((side, ind) => (
+                <Side
+                    background={parseSideBackground(side)}
+                    border={parseSideBorder(side)}
+                    key={ind}
+                    size={size}
+                    transform={parseSideTransform(side)}
+                />
+            ))}
         </div>
     );
 };

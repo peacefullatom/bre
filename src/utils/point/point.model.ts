@@ -1,4 +1,4 @@
-import { Axis } from "../../enums/axis.enum";
+import { Axis } from '../../enums/axis.enum';
 
 export type PointModel = {
     [key in Axis]: number;

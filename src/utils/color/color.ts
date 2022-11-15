@@ -1,5 +1,11 @@
-import { DEFAULT_HEX_ALPHA, DEFAULT_HEX_BLACK, DEFAULT_HEX_COLOR, DEFAULT_NUMERIC_ALPHA, DEFAULT_NUMERIC_BLACK } from "./color.const";
-import { ColorModel } from "./color.model";
+import {
+    DEFAULT_HEX_ALPHA,
+    DEFAULT_HEX_BLACK,
+    DEFAULT_HEX_COLOR,
+    DEFAULT_NUMERIC_ALPHA,
+    DEFAULT_NUMERIC_BLACK,
+} from './color.const';
+import { ColorModel, ColorType } from './color.model';
 
 export class Color implements ColorModel {
     private valueR: number;
@@ -45,13 +51,15 @@ export class Color implements ColorModel {
 
     set hex(value: string) {
         const color = this.normalizeHex(value).replace(/#/, '');
-        const colors = color.match(/([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i) || [];
+        const colors =
+            color.match(
+                /([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i
+            ) || [];
         const [, r, g, b, a] = colors;
         this.r = this.hexToNumeric(r);
         this.g = this.hexToNumeric(g);
         this.b = this.hexToNumeric(b);
         this.a = this.hexToNumeric(a);
-
     }
 
     get hex(): string {
@@ -62,13 +70,18 @@ export class Color implements ColorModel {
         return `#${r}${g}${b}${a}`;
     }
 
-    constructor(settings?: Partial<ColorModel>) {
-        this.r = settings?.r || DEFAULT_NUMERIC_BLACK;
-        this.g = settings?.g || DEFAULT_NUMERIC_BLACK;
-        this.b = settings?.b || DEFAULT_NUMERIC_BLACK;
-        this.a = settings?.a || DEFAULT_NUMERIC_ALPHA;
-        if (typeof settings?.hex === 'string') {
-            this.hex = this.normalizeHex(settings.hex);
+    constructor(settings?: ColorType) {
+        if (typeof settings === 'string') {
+            this.hex = this.normalizeHex(settings);
+        }
+        if (typeof settings === 'object') {
+            this.r = settings?.r || DEFAULT_NUMERIC_BLACK;
+            this.g = settings?.g || DEFAULT_NUMERIC_BLACK;
+            this.b = settings?.b || DEFAULT_NUMERIC_BLACK;
+            this.a = settings?.a || DEFAULT_NUMERIC_ALPHA;
+            if (typeof settings?.hex === 'string') {
+                this.hex = this.normalizeHex(settings.hex);
+            }
         }
     }
 
@@ -91,7 +104,10 @@ export class Color implements ColorModel {
         return value;
     }
 
-    normalizeHexValue(value?: string, defaultValue = DEFAULT_HEX_BLACK): string {
+    normalizeHexValue(
+        value?: string,
+        defaultValue = DEFAULT_HEX_BLACK
+    ): string {
         const normal = value || defaultValue;
         if (normal.length > 2) {
             return defaultValue;
@@ -100,13 +116,13 @@ export class Color implements ColorModel {
     }
 
     /**
-     * This is a lazy implementation which will try check string of colour definition.
-     * 
+     * This is a lazy implementation which will try check string of color definition.
+     *
      * You may provide:
      * - *#a* - it will return *#aaaaaaff*
      * - *#bcd* - it will return *#bbccddff*
      * - *#ef1234* - it will return *#ef1234ff*
-     * 
+     *
      * if normalization will fail it'll return *#000000ff*
      */
     normalizeHex(color = DEFAULT_HEX_COLOR): string {
@@ -114,8 +130,16 @@ export class Color implements ColorModel {
         const duplicate = (value?: string): string => {
             return value ? value + value : DEFAULT_HEX_BLACK;
         };
-        const glue = (r?: string, g?: string, b?: string, a?: string): string => {
-            return `#${normalize(r)}${normalize(g)}${normalize(b)}${normalize(a, DEFAULT_HEX_ALPHA)}`.toLowerCase();
+        const glue = (
+            r?: string,
+            g?: string,
+            b?: string,
+            a?: string
+        ): string => {
+            return `#${normalize(r)}${normalize(g)}${normalize(b)}${normalize(
+                a,
+                DEFAULT_HEX_ALPHA
+            )}`.toLowerCase();
         };
         const value = color.replace(/#/, '');
         const len = value.length;
@@ -126,18 +150,24 @@ export class Color implements ColorModel {
             const n = duplicate(c);
             return glue(n, n, n);
         } else if (len === 3) {
-            const values = value.match(/([0-9a-f])?([0-9a-f])?([0-9a-f])?/i) || [];
+            const values =
+                value.match(/([0-9a-f])?([0-9a-f])?([0-9a-f])?/i) || [];
             const [, r, g, b] = values;
             const nR = duplicate(r);
             const nG = duplicate(g);
             const nB = duplicate(b);
             return glue(nR, nG, nB);
         } else if (len === 6) {
-            const values = value.match(/([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i) || [];
+            const values =
+                value.match(/([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i) ||
+                [];
             const [, r, g, b] = values;
             return glue(r, g, b);
         } else if (len === 8) {
-            const values = value.match(/([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i) || [];
+            const values =
+                value.match(
+                    /([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?([0-9a-f]{2})?/i
+                ) || [];
             const [, r, g, b, a] = values;
             return glue(r, g, b, a);
         }
