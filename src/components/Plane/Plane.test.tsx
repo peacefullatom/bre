@@ -16,6 +16,9 @@ const planeProps: PlaneProps = {
         Z: 52,
     },
     grid,
+    blockScript: {
+        blocks: [],
+    },
 };
 
 describe('it should render', () => {
