@@ -1,4 +1,7 @@
+import { CachedComponent } from '../../utils/cached-component/cached-component';
 import { SideModel } from './Side.model';
+
+export const SideCached = (props: SideModel) => CachedComponent(props, Side);
 
 export const Side = (props: SideModel) => {
     const {
