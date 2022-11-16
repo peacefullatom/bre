@@ -1,6 +1,5 @@
 import { Axis } from '../../enums/axis.enum';
 import { Units } from '../../enums/units.enum';
-import { ColorModel, ColorType } from '../../utils/color/color.model';
 import { TransformBatch } from '../../utils/transform/transform.model';
 import { Side } from '../Side/Side';
 import { BLOCK_DEFAULT_SETTINGS } from './Block.const';
@@ -33,34 +32,25 @@ export const Block = (props: BlockModel) => {
 
     const parseSideTransform = (side: BlockSide): string | undefined => {
         switch (side) {
-            // make cache on the level of transformer
             case BlockSide.Front:
                 return transform.getTransformBatch({ ...translateZ });
-            // make cache on the level of transformer
             case BlockSide.Top:
                 return getTransform(Axis.X, 90);
-            // make cache on the level of transformer
             case BlockSide.Right:
                 return getTransform(Axis.Y, 90);
-            // make cache on the level of transformer
             case BlockSide.Left:
                 return getTransform(Axis.Y, -90);
-            // make cache on the level of transformer
             case BlockSide.Bottom:
                 return getTransform(Axis.X, -90);
-            // make cache on the level of transformer
             case BlockSide.Back:
                 return getTransform(Axis.X, -180);
         }
     };
 
-    const parseColorType = (hex: ColorType) =>
-        typeof hex === 'string' ? { hex } : hex;
-
     const parseSideBackground = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
         const colorSettings = settings?.background
-            ? parseColorType(settings.background)
+            ? settings.background
             : backgroundSettings;
         const background = color.parseColorType(colorSettings);
         return (
@@ -72,7 +62,7 @@ export const Block = (props: BlockModel) => {
     const parseSideBorder = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
         const colorSettings = settings?.border
-            ? ({ hex: settings?.border } as Partial<ColorModel>)
+            ? settings?.border
             : borderSettings;
         const border = color.parseBorder(colorSettings);
         return border || color.parseBorder(BLOCK_DEFAULT_SETTINGS.border);

@@ -1,6 +1,6 @@
-import { Axis } from "../../enums/axis.enum";
-import { Units } from "../../enums/units.enum";
-import { PointModel } from "../point/point.model";
+import { Axis } from '../../enums/axis.enum';
+import { Units } from '../../enums/units.enum';
+import { PointModel } from '../point/point.model';
 
 export enum TransformType {
     Rotate = 'rotate',
@@ -18,7 +18,7 @@ export type TransformBatch = {
 };
 
 export interface TransformPoint {
-    transform: TransformType,
-    units: Units,
+    transform: TransformType;
+    units: Units;
     point?: Partial<PointModel>;
 }

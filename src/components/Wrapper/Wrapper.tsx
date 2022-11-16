@@ -40,6 +40,7 @@ export const Wrapper = () => {
                 // {
                 //     point: { X: -1, Y: 0, Z: 0 },
                 // }
+
                 { point: { X: 0, Y: -1, Z: 0 } },
                 { point: { X: 0, Y: 0, Z: 0 } },
                 { point: { X: 0, Y: 1, Z: 0 } },
