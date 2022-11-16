@@ -1,3 +1,5 @@
+import { BorderStyle } from '../../enums/border-style.enum';
+import { Units } from '../../enums/units.enum';
 import {
     DEFAULT_HEX_ALPHA,
     DEFAULT_HEX_BLACK,
@@ -82,6 +84,46 @@ export class Color implements ColorModel {
                 this.hex = this.normalizeHex(settings.hex);
             }
         }
+    }
+
+    parseColorType(color?: ColorType): string | undefined {
+        if (typeof color === 'string') {
+            return this.normalizeHex(color);
+        }
+
+        if (typeof color === 'object') {
+            const { r, g, b, a, hex } = color;
+            if (
+                typeof r === 'number' &&
+                typeof g === 'number' &&
+                typeof b === 'number'
+            ) {
+                return [
+                    '#',
+                    this.numericToHex(r),
+                    this.numericToHex(g),
+                    this.numericToHex(b),
+                    this.numericToHex(a || DEFAULT_NUMERIC_ALPHA),
+                ].join('');
+            }
+            if (typeof hex === 'string') {
+                return this.normalizeHex(color.hex);
+            }
+        }
+    }
+
+    parseBorder(
+        color?: ColorType,
+        thickness = 1,
+        style = BorderStyle.Solid,
+        units = Units.Px
+    ): string | undefined {
+        if (!color) {
+            return;
+        }
+
+        const borderColor = this.parseColorType(color);
+        return `${thickness}${units} ${style} ${borderColor}`;
     }
 
     hexToNumeric(hex = DEFAULT_HEX_BLACK): number {

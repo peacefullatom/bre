@@ -1,6 +1,5 @@
 import { Units } from '../../enums/units.enum';
-import { borderGenerator } from '../../generators/border/border';
-import { hexColor } from '../../generators/hexColor/hex-color';
+import { Color } from '../../utils/color/color';
 import { Transform } from '../../utils/transform/transform';
 import { TransformType } from '../../utils/transform/transform.model';
 import { Block } from '../Block/Block';
@@ -27,8 +26,9 @@ export const Plane = (props: PlaneProps) => {
         axisLength,
         grid
     );
-    const background = hexColor(backgroundColor);
-    const border = borderGenerator(borderColor);
+    const color = new Color();
+    const background = color.parseColorType(backgroundColor);
+    const border = color.parseBorder(borderColor);
     const transformer = new Transform();
 
     const transform = transformer.getPointTransformBatch([
@@ -57,6 +57,7 @@ export const Plane = (props: PlaneProps) => {
                     grid={grid}
                     key={ind}
                     transform={transformer}
+                    color={color}
                 />
             ))}
         </div>

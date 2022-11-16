@@ -1,7 +1,5 @@
 import { Axis } from '../../enums/axis.enum';
 import { Units } from '../../enums/units.enum';
-import { borderGenerator } from '../../generators/border/border';
-import { hexColor } from '../../generators/hexColor/hex-color';
 import { ColorModel, ColorType } from '../../utils/color/color.model';
 import { TransformBatch } from '../../utils/transform/transform.model';
 import { Side } from '../Side/Side';
@@ -12,6 +10,7 @@ export const Block = (props: BlockModel) => {
     const {
         background: backgroundSettings,
         border: borderSettings,
+        color,
         grid,
         point: pointSettings,
         sides,
@@ -60,20 +59,23 @@ export const Block = (props: BlockModel) => {
 
     const parseSideBackground = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
-        const color = settings?.background
+        const colorSettings = settings?.background
             ? parseColorType(settings.background)
             : backgroundSettings;
-        const background = hexColor(color);
-        return background || hexColor(BLOCK_DEFAULT_SETTINGS.background);
+        const background = color.parseColorType(colorSettings);
+        return (
+            background ||
+            color.parseColorType(BLOCK_DEFAULT_SETTINGS.background)
+        );
     };
 
     const parseSideBorder = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
-        const color = settings?.border
+        const colorSettings = settings?.border
             ? ({ hex: settings?.border } as Partial<ColorModel>)
             : borderSettings;
-        const border = borderGenerator(color);
-        return border || borderGenerator(BLOCK_DEFAULT_SETTINGS.border);
+        const border = color.parseBorder(colorSettings);
+        return border || color.parseBorder(BLOCK_DEFAULT_SETTINGS.border);
     };
 
     return (

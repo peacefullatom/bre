@@ -1,3 +1,4 @@
+import { Color } from '../../utils/color/color';
 import { ColorType } from '../../utils/color/color.model';
 import { Grid } from '../../utils/grid/grid';
 import { PointModel } from '../../utils/point/point.model';
@@ -7,6 +8,7 @@ import { SideModel } from '../Side/Side.model';
 export interface BlockModel {
     background?: ColorType;
     border?: ColorType;
+    color: Color;
     defaultProps?: BlockOverride;
     grid: Grid;
     point: PointModel;
