@@ -1,11 +1,16 @@
-export const Cache = <T = any>() => {
-    const storage: { [key: string]: Map<any, any> } = {};
+const storage: { [key: string]: { [key: string]: Map<any, any> } } = {};
+
+export const Cache = <T extends Object>() => {
     return (target: T, propertyKey: string, descriptor: PropertyDescriptor) => {
-        if (!storage[propertyKey]) {
-            storage[propertyKey] = new Map();
+        const type = target.constructor.name;
+        if (!storage[type]) {
+            storage[type] = {};
         }
-        const cache = storage[propertyKey];
-        let method = descriptor.value;
+        if (!storage[type][propertyKey]) {
+            storage[type][propertyKey] = new Map();
+        }
+        const cache = storage[type][propertyKey];
+        const method = descriptor.value;
         descriptor.value = function () {
             const key = JSON.stringify(arguments);
             let value = cache.get(key);
