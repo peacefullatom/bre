@@ -1,7 +1,7 @@
 import { Axis } from '../../enums/axis.enum';
 import { Units } from '../../enums/units.enum';
 import { TransformBatch } from '../../utils/transform/transform.model';
-import { Side } from '../Side/Side';
+import { SideCached } from '../Side/Side';
 import { BLOCK_DEFAULT_SETTINGS } from './Block.const';
 import { BlockModel, BlockSide } from './Block.model';
 
@@ -79,7 +79,7 @@ export const Block = (props: BlockModel) => {
             }}
         >
             {Object.values(BlockSide).map((side, ind) => (
-                <Side
+                <SideCached
                     background={parseSideBackground(side)}
                     border={parseSideBorder(side)}
                     key={ind}

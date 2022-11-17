@@ -1,3 +1,4 @@
+import { Cache } from '../../decorators/cache.decorator';
 import { BorderStyle } from '../../enums/border-style.enum';
 import { Units } from '../../enums/units.enum';
 import {
@@ -5,7 +6,7 @@ import {
     DEFAULT_HEX_BLACK,
     DEFAULT_HEX_COLOR,
     DEFAULT_NUMERIC_ALPHA,
-    DEFAULT_NUMERIC_BLACK,
+    DEFAULT_NUMERIC_BLACK
 } from './color.const';
 import { ColorModel, ColorType } from './color.model';
 
@@ -86,6 +87,7 @@ export class Color implements ColorModel {
         }
     }
 
+    @Cache()
     parseColorType(color?: ColorType): string | undefined {
         if (typeof color === 'string') {
             return this.normalizeHex(color);
@@ -112,6 +114,7 @@ export class Color implements ColorModel {
         }
     }
 
+    @Cache()
     parseBorder(
         color?: ColorType,
         thickness = 1,
@@ -126,15 +129,18 @@ export class Color implements ColorModel {
         return `${thickness}${units} ${style} ${borderColor}`;
     }
 
+    @Cache()
     hexToNumeric(hex = DEFAULT_HEX_BLACK): number {
         const value = hex.replace(/#/, '');
         return parseInt(value, 16);
     }
 
+    @Cache()
     numericToHex(value = 0): string {
         return this.normalizeHexValue(value.toString(16)).toLowerCase();
     }
 
+    @Cache()
     normalizeNumericValue(value = 0): number {
         if (value < 0) {
             return 0;
@@ -145,6 +151,7 @@ export class Color implements ColorModel {
         return value;
     }
 
+    @Cache()
     normalizeHexValue(
         value?: string,
         defaultValue = DEFAULT_HEX_BLACK
@@ -166,8 +173,8 @@ export class Color implements ColorModel {
      *
      * if normalization will fail it'll return *#000000ff*
      */
+    @Cache()
     normalizeHex(color = DEFAULT_HEX_COLOR): string {
-        const normalize = this.normalizeHexValue;
         const duplicate = (value?: string): string => {
             return value ? value + value : DEFAULT_HEX_BLACK;
         };
@@ -177,7 +184,9 @@ export class Color implements ColorModel {
             b?: string,
             a?: string
         ): string => {
-            return `#${normalize(r)}${normalize(g)}${normalize(b)}${normalize(
+            return `#${this.normalizeHexValue(r)}${this.normalizeHexValue(
+                g
+            )}${this.normalizeHexValue(b)}${this.normalizeHexValue(
                 a,
                 DEFAULT_HEX_ALPHA
             )}`.toLowerCase();

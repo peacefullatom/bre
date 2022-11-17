@@ -1,3 +1,4 @@
+import { Cache } from '../../decorators/cache.decorator';
 import { Axis } from '../../enums/axis.enum';
 import { Units } from '../../enums/units.enum';
 import { PointModel } from '../point/point.model';
@@ -11,9 +12,6 @@ export class Transform implements PointModel {
     private valueX: number;
     private valueY: number;
     private valueZ: number;
-    private valuePointTransformCache = new Map<TransformPoint, string>();
-    private valuePointTransformBatchCache = new Map<TransformPoint[], string>();
-    private valueTransformBatchCache = new Map<TransformBatch, string>();
 
     set X(value: number) {
         this.valueX = value;
@@ -45,6 +43,7 @@ export class Transform implements PointModel {
         this.Z = settings?.Z || 0;
     }
 
+    @Cache()
     getTransformByAxis(
         transform: TransformType,
         axis: Axis,
@@ -53,6 +52,7 @@ export class Transform implements PointModel {
         return `${transform}${axis}(${this[axis]}${units || ''})`;
     }
 
+    @Cache()
     getTransform(transform: TransformType, units?: Units): string {
         return Object.keys(Axis)
             .map(
@@ -62,6 +62,7 @@ export class Transform implements PointModel {
             .join(' ');
     }
 
+    @Cache()
     getPointTransform(task: TransformPoint): string | undefined {
         const { transform, units, point } = task;
 
@@ -69,53 +70,38 @@ export class Transform implements PointModel {
             return;
         }
 
-        let result = this.valuePointTransformCache.get(task);
-        if (!result) {
-            result = Object.keys(Axis)
-                .map(
-                    (axis) =>
-                        `${transform}${axis}(${point[axis as Axis]}${units})`
-                )
-                .join(' ');
-            this.valuePointTransformCache.set(task, result);
-        }
-
-        return result;
+        return Object.keys(Axis)
+            .map(
+                (axis) => `${transform}${axis}(${point[axis as Axis]}${units})`
+            )
+            .join(' ');
     }
 
+    @Cache()
     getPointTransformBatch(batch: TransformPoint[]): string {
-        let result = this.valuePointTransformBatchCache.get(batch);
-        if (!result) {
-            result = batch
-                .map((task) => this.getPointTransform(task))
-                .join(' ');
-            this.valuePointTransformBatchCache.set(batch, result);
-        }
-        return result;
+        return batch.map((task) => this.getPointTransform(task)).join(' ');
     }
 
+    @Cache()
     getRotateByAxis(axis: Axis): string {
         return `${TransformType.Rotate}${axis}(${this[axis]}${Units.Deg})`;
     }
 
+    @Cache()
     getTranslateByAxis(axis: Axis, units = Units.Em): string {
         return `${TransformType.Translate}${axis}(${this[axis]}${units})`;
     }
 
+    @Cache()
     getTransformBatch(batch: TransformBatch): string {
-        let result = this.valueTransformBatchCache.get(batch);
-        if (!result) {
-            result = Object.keys(batch)
-                .map((key) => {
-                    const transform = batch[key as TransformType] || [];
-                    return transform.map(
-                        (settings) =>
-                            `${key}${settings.axis}(${settings.value}${settings.units})`
-                    );
-                })
-                .join(' ');
-            this.valueTransformBatchCache.set(batch, result);
-        }
-        return result;
+        return Object.keys(batch)
+            .map((key) => {
+                const transform = batch[key as TransformType] || [];
+                return transform.map(
+                    (settings) =>
+                        `${key}${settings.axis}(${settings.value}${settings.units})`
+                );
+            })
+            .join(' ');
     }
 }
