@@ -60,7 +60,6 @@ export class Grid implements GridModel {
         this.dropGridCache();
     }
 
-    @Cache()
     getFullAxisLength(axisLength: number): string {
         return `${(axisLength * 2 + 1) * this.blockSize}${this.units}`;
     }
