@@ -1,7 +1,7 @@
-import { Wrapper } from './components/Wrapper/Wrapper';
+import { Modeler } from './components/Modeler/Modeler';
 
 const App = () => {
-  return <Wrapper />;
-}
+    return <Modeler />;
+};
 
 export default App;
