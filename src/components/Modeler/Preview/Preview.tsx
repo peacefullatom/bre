@@ -14,6 +14,7 @@ export const Preview = (props: PreviewModel) => {
                 borderBottom: '1px solid black',
                 borderLeft: '1px solid black',
                 overflow: 'hidden',
+                background: '#80808080',
             }}
         >
             <ViewLabel label="3D" />

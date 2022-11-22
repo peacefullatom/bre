@@ -1,7 +1,4 @@
-import { CachedComponent } from '../../utils/cached-component/cached-component';
 import { SideModel } from './Side.model';
-
-export const SideCached = (props: SideModel) => CachedComponent(props, Side);
 
 export const Side = (props: SideModel) => {
     const {
@@ -16,10 +13,20 @@ export const Side = (props: SideModel) => {
         size,
         text,
         transform,
+        hoverHandler,
     } = props;
+
+    const handleMouseHover = (value: boolean) => {
+        if (!hoverHandler) {
+            return;
+        }
+        hoverHandler(value);
+    };
 
     return (
         <div
+            onMouseEnter={() => handleMouseHover(true)}
+            onMouseLeave={() => handleMouseHover(false)}
             style={{
                 background,
                 border,

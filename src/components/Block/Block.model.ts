@@ -16,6 +16,8 @@ export interface BlockModel {
     point: PointModel;
     sides?: { [key in BlockSide]?: BlockOverride };
     transform: Transform;
+    hoverBackground?: ColorType;
+    hoverBorder?: ColorType;
 }
 
 export enum BlockSide {
@@ -34,6 +36,7 @@ export interface BlockOverride extends Omit<SideModel, 'background' | 'border' |
 }
 
 export interface BlockScriptModel extends BlockOverride {
+    id: string;
     point: PointModel;
     sides?: { [key in BlockSide]?: BlockOverride };
 }
