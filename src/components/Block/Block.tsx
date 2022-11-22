@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import { Axis } from '../../enums/axis.enum';
 import { Units } from '../../enums/units.enum';
 import { TransformBatch } from '../../utils/transform/transform.model';
-import { SideCached } from '../Side/Side';
+import { Side } from '../Side/Side';
 import { BLOCK_DEFAULT_SETTINGS } from './Block.const';
 import { BlockModel, BlockSide } from './Block.model';
 
 export const Block = (props: BlockModel) => {
     const {
+        id,
         background: backgroundSettings,
         border: borderSettings,
         color,
@@ -18,6 +20,7 @@ export const Block = (props: BlockModel) => {
     const { blockSize, units } = grid;
     const size = `${blockSize}${units}`;
     const point = grid.relativeToAbsolute(pointSettings);
+    const [mouseOver, setMouseOver] = useState(false);
 
     const translateZ: TransformBatch = {
         translate: [{ axis: Axis.Z, units, value: blockSize / 2 }],
@@ -49,21 +52,16 @@ export const Block = (props: BlockModel) => {
 
     const parseSideBackground = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
-        const colorSettings = settings?.background
-            ? settings.background
-            : backgroundSettings;
+        const colorSettings = settings?.background ? settings.background : backgroundSettings;
         const background = color.parseColorType(colorSettings);
-        return (
-            background ||
-            color.parseColorType(BLOCK_DEFAULT_SETTINGS.background)
-        );
+        const highlight = color.parseColorType(colorSettings, 40);
+        const result = mouseOver ? highlight : background;
+        return result || color.parseColorType(BLOCK_DEFAULT_SETTINGS.background);
     };
 
     const parseSideBorder = (side: BlockSide): string | undefined => {
         const settings = sides ? sides[side] : undefined;
-        const colorSettings = settings?.border
-            ? settings?.border
-            : borderSettings;
+        const colorSettings = settings?.border ? settings?.border : borderSettings;
         const border = color.parseBorder(colorSettings);
         return border || color.parseBorder(BLOCK_DEFAULT_SETTINGS.border);
     };
@@ -79,12 +77,13 @@ export const Block = (props: BlockModel) => {
             }}
         >
             {Object.values(BlockSide).map((side, ind) => (
-                <SideCached
+                <Side
                     background={parseSideBackground(side)}
                     border={parseSideBorder(side)}
                     key={ind}
                     size={size}
                     transform={parseSideTransform(side)}
+                    hoverHandler={setMouseOver}
                 />
             ))}
         </div>

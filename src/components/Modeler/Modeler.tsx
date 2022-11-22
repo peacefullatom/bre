@@ -26,39 +26,46 @@ export const Modeler = (props = DEFAULT_MODELER_MODEL) => {
     const [blockScript, setBlockScript] = useState<BlockScript>({
         blocks: [
             {
+                id: '0000001',
                 point: { X: 0, Y: 0, Z: 0 },
                 background: '#44884480',
-                border: '#44884480',
+                border: color.parseColorType('#44884480', -40),
             },
             {
+                id: '0000002',
                 point: { X: 0, Y: 1, Z: 0 },
                 background: '#ff884480',
-                border: '#ff884480',
+                border: color.parseColorType('#ff884480', -40),
             },
             {
+                id: '0000003',
                 point: { X: 0, Y: -1, Z: 0 },
                 background: '#4488ff80',
-                border: '#4488ff80',
+                border: color.parseColorType('#4488ff80', -40),
             },
             {
+                id: '0000004',
                 point: { X: 1, Y: 0, Z: 0 },
                 background: '#22ff2280',
-                border: '#22ff2280',
+                border: color.parseColorType('#22ff2280', -40),
             },
             {
+                id: '0000005',
                 point: { X: -1, Y: 0, Z: 0 },
                 background: '#ff22ff80',
-                border: '#ff22ff80',
+                border: color.parseColorType('#ff22ff80', -40),
             },
             {
+                id: '0000006',
                 point: { X: 0, Y: 0, Z: 1 },
                 background: '#cc339980',
-                border: '#cc339980',
+                border: color.parseColorType('#cc339980', -40),
             },
             {
+                id: '0000007',
                 point: { X: 0, Y: 0, Z: -1 },
                 background: '#00336680',
-                border: '#00336680',
+                border: color.parseColorType('#00336680', -40),
             },
         ],
     });

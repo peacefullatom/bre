@@ -10,4 +10,5 @@ export interface SideModel {
     size?: string;
     text?: string;
     transform?: string;
+    hoverHandler?: (value: boolean) => void;
 }
