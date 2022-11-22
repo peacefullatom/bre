@@ -13,6 +13,7 @@ export const Projection = (props: ProjectionModel) => {
                 borderBottom: '1px solid black',
                 borderLeft: '1px solid black',
                 perspective: '800px',
+                overflow: 'hidden',
             }}
         >
             <ViewLabel label={axis} />

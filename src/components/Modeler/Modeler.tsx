@@ -2,25 +2,27 @@ import { useRef, useState } from 'react';
 import { Axis } from '../../enums/axis.enum';
 import { Color } from '../../utils/color/color';
 import { Grid } from '../../utils/grid/grid';
-import { BlockScript } from '../Block/Block.model';
+import { GridModel } from '../../utils/grid/grid.model';
+import { BlockModel, BlockScript } from '../Block/Block.model';
 import { Plane } from '../Plane/Plane';
 import { PlaneProjection } from '../Plane/Plane.model';
 import { DEFAULT_MODELER_MODEL, modelerGetRotate } from './Modeler.const';
 import { useViewsSize } from './Modeler.hooks';
+import { PanelGrid } from './panels/PanelGrid/PanelGrid';
+import { PanelProperties } from './panels/PanelBlockProperties/PanelBlockProperties';
 import { Preview } from './Preview/Preview';
 import { Projection } from './Projection/Projection';
 
 export const Modeler = (props = DEFAULT_MODELER_MODEL) => {
     const defaultProps = { ...props, ...DEFAULT_MODELER_MODEL };
-    const {
-        name,
-        grid: gridSettings,
-        blockScript: blockScriptSettings,
-    } = defaultProps;
+    const { name, grid: gridSettings, blockScript: blockScriptSettings } = defaultProps;
     const ref = useRef<HTMLDivElement>(null);
     const [wrapperWidth, wrapperHeight] = useViewsSize(ref);
     const color = new Color();
-    const grid = new Grid(gridSettings);
+    const [grid, setGrid] = useState(new Grid(gridSettings));
+    const updateGrid = (settings: Partial<GridModel>) =>
+        setGrid(new Grid({ ...gridSettings, ...settings }));
+    const updateBlock = (settings: Partial<BlockModel>) => {};
     const [blockScript, setBlockScript] = useState<BlockScript>({
         blocks: [
             {
@@ -129,24 +131,23 @@ export const Modeler = (props = DEFAULT_MODELER_MODEL) => {
                         background: color.parseColorType('#d0d0d0'),
                         flexShrink: 0,
                         width: '300px',
-                        height: '100%',
-                        display: 'flex',
-                        flexFlow: 'wrap',
+                        height: 'calc(100vh - 2rem)',
                         borderLeft: '1px solid black',
+                        overflow: 'auto',
                     }}
                 >
-                    {/* title */}
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '2rem',
-                            lineHeight: '2rem',
-                            padding: '0 2rem',
-                            background: color.parseColorType('#b0b0b0'),
+                    <PanelGrid grid={grid} update={updateGrid}></PanelGrid>
+                    <PanelProperties
+                        block={{
+                            id: '3f5c08',
+                            name: 'Block 1',
+                            background: '#33669980',
+                            border: '#336699ff',
+                            point: { X: 0, Y: 0, Z: 0 },
                         }}
-                    >
-                        Properties
-                    </div>
+                        grid={grid}
+                        update={updateBlock}
+                    />
                 </div>
             </div>
         </div>

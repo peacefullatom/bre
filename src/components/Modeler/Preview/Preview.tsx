@@ -13,6 +13,7 @@ export const Preview = (props: PreviewModel) => {
                 boxSizing: 'border-box',
                 borderBottom: '1px solid black',
                 borderLeft: '1px solid black',
+                overflow: 'hidden',
             }}
         >
             <ViewLabel label="3D" />

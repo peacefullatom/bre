@@ -6,6 +6,8 @@ import { Transform } from '../../utils/transform/transform';
 import { SideModel } from '../Side/Side.model';
 
 export interface BlockModel {
+    id?: string;
+    name?: string;
     background?: ColorType;
     border?: ColorType;
     color: Color;
@@ -17,16 +19,15 @@ export interface BlockModel {
 }
 
 export enum BlockSide {
-    Front = 'front',
-    Top = 'top',
-    Right = 'right',
-    Left = 'left',
-    Bottom = 'bottom',
-    Back = 'back',
+    Front = 'Front',
+    Top = 'Top',
+    Right = 'Right',
+    Left = 'Left',
+    Bottom = 'Bottom',
+    Back = 'Back',
 }
 
-export interface BlockOverride
-    extends Omit<SideModel, 'background' | 'border' | 'color'> {
+export interface BlockOverride extends Omit<SideModel, 'background' | 'border' | 'color'> {
     background?: ColorType;
     border?: ColorType;
     color?: ColorType;
