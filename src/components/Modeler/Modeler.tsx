@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Axis } from '../../enums/axis.enum';
 import { Color } from '../../utils/color/color';
 import { Grid } from '../../utils/grid/grid';
@@ -8,20 +8,25 @@ import { Plane } from '../Plane/Plane';
 import { PlaneProjection } from '../Plane/Plane.model';
 import { DEFAULT_MODELER_MODEL, modelerGetRotate } from './Modeler.const';
 import { useViewsSize } from './Modeler.hooks';
-import { PanelGrid } from './panels/PanelGrid/PanelGrid';
 import { PanelProperties } from './panels/PanelBlockProperties/PanelBlockProperties';
+import { PanelGrid } from './panels/PanelGrid/PanelGrid';
 import { Preview } from './Preview/Preview';
 import { Projection } from './Projection/Projection';
 
 export const Modeler = (props = DEFAULT_MODELER_MODEL) => {
     const defaultProps = { ...props, ...DEFAULT_MODELER_MODEL };
     const { name, grid: gridSettings, blockScript: blockScriptSettings } = defaultProps;
+    const [gridProps, setGridProps] = useState({ ...gridSettings });
     const ref = useRef<HTMLDivElement>(null);
     const [wrapperWidth, wrapperHeight] = useViewsSize(ref);
     const color = new Color();
-    const [grid, setGrid] = useState(new Grid(gridSettings));
-    const updateGrid = (settings: Partial<GridModel>) =>
-        setGrid(new Grid({ ...gridSettings, ...settings }));
+    const [grid, setGrid] = useState(new Grid(gridProps));
+    const updateGrid = (settings: Partial<GridModel>) => {
+        setGridProps({ ...gridProps, ...settings });
+    };
+    useEffect(() => {
+        setGrid(new Grid(gridProps));
+    }, [gridProps]);
     const updateBlock = (settings: Partial<BlockModel>) => {};
     const [blockScript, setBlockScript] = useState<BlockScript>({
         blocks: [
